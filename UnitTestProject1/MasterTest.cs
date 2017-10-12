@@ -23,10 +23,11 @@ namespace UnitTestProject1
             Console.SetOut(_originalOut);
         }
 
+        //Compares con
         [Fact]
-        public void generate_master()
+        public void compare_to_master()
         {
-            RunTheProgram(seed: 99, outputFile: ConsoleOutput, times: 100);
+            RunTheProgram(seed: 794, outputFile: ConsoleOutput, times: 100);
 
             var actual = File.ReadAllText(ConsoleOutput);
             var goldenMaster = File.ReadAllText(MasterCopy);
@@ -37,9 +38,9 @@ namespace UnitTestProject1
         [Fact]
         public void checks_wheter_the_output_is_deterministic()
         {
-            RunTheProgram(seed: 99, outputFile: "output1.txt", times: 100);
+            RunTheProgram(seed: 794, outputFile: "output1.txt", times: 100);
 
-            RunTheProgram(seed: 99, outputFile: "output2.txt", times: 100);
+            RunTheProgram(seed: 794, outputFile: "output2.txt", times: 100);
 
             var actual1 = File.ReadAllText("output1.txt");
             var actual2 = File.ReadAllText("output2.txt");
