@@ -76,5 +76,15 @@ namespace TriviaUnitTestProject
             //Player wins game in six correct answers
             Assert.IsFalse(testGame.wasCorrectlyAnswered());
         }
+
+        [TestMethod]
+        public void TestQuestions()
+        {
+            testGame.add("Player1");
+            for(int i=0; i<201; ++i)
+            {
+                testGame.roll(1);
+            }
+        }
     }
 }
