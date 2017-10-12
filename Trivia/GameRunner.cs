@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using UglyTrivia;
+using Trivia;
 
-namespace Trivia
+namespace UglyTrivia
 {
     public class GameRunner
     {
