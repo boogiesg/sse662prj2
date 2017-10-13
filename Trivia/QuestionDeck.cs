@@ -38,6 +38,7 @@ namespace Trivia
             return category + " Question " + index;
         }
 
+        //method extracted from currentcategory in Game class
         public string CurrentCategoryPlace(int currentPlace)
         {
             if (currentPlace == 0) return "Pop";

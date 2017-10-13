@@ -46,11 +46,13 @@ namespace Trivia
             return "Rock Question " + index;
         }
 
+        //JCook "I don't believe isPlayable() needs refactoring. Thoughts?"
         public bool isPlayable()
         {
             return (howManyPlayers() >= 2);
         }
-
+        
+        //JCook "I don't believe add(playerName) needs refactoring. Thoughts?"
         public bool add(String playerName)
         {
 
@@ -65,6 +67,7 @@ namespace Trivia
             return true;
         }
 
+        //JCook "I don't believe howManyPlayers() needs refactoring. Thoughts?"
         public int howManyPlayers()
         {
             return players.Count;
@@ -115,41 +118,47 @@ namespace Trivia
 
         private void askQuestion()
         {
-            if (currentCategory() == "Pop")
-            {
-                Console.WriteLine(popQuestions.First());
-                popQuestions.RemoveFirst();
-            }
-            if (currentCategory() == "Science")
-            {
-                Console.WriteLine(scienceQuestions.First());
-                scienceQuestions.RemoveFirst();
-            }
-            if (currentCategory() == "Sports")
-            {
-                Console.WriteLine(sportsQuestions.First());
-                sportsQuestions.RemoveFirst();
-            }
-            if (currentCategory() == "Rock")
-            {
-                Console.WriteLine(rockQuestions.First());
-                rockQuestions.RemoveFirst();
-            }
+            var question = _questionDeck.AskCategoryQuestion(CurrentCategory());
+            Console.WriteLine(question);
+
+            //if (currentCategory() == "Pop")
+            //{
+            //    Console.WriteLine(popQuestions.First());
+            //    popQuestions.RemoveFirst();
+            //}
+            //if (currentCategory() == "Science")
+            //{
+            //    Console.WriteLine(scienceQuestions.First());
+            //    scienceQuestions.RemoveFirst();
+            //}
+            //if (currentCategory() == "Sports")
+            //{
+            //    Console.WriteLine(sportsQuestions.First());
+            //    sportsQuestions.RemoveFirst();
+            //}
+            //if (currentCategory() == "Rock")
+            //{
+            //    Console.WriteLine(rockQuestions.First());
+            //    rockQuestions.RemoveFirst();
+            //}
         }
 
 
         private String currentCategory()
         {
-            if (places[currentPlayer] == 0) return "Pop";
-            if (places[currentPlayer] == 4) return "Pop";
-            if (places[currentPlayer] == 8) return "Pop";
-            if (places[currentPlayer] == 1) return "Science";
-            if (places[currentPlayer] == 5) return "Science";
-            if (places[currentPlayer] == 9) return "Science";
-            if (places[currentPlayer] == 2) return "Sports";
-            if (places[currentPlayer] == 6) return "Sports";
-            if (places[currentPlayer] == 10) return "Sports";
-            return "Rock";
+            //category tracking method moved to questiondeck class
+            return questionDeck.CurrentCategoryPlace(places[currentPlayer]);
+            
+            //if (places[currentPlayer] == 0) return "Pop";
+            //if (places[currentPlayer] == 4) return "Pop";
+            //if (places[currentPlayer] == 8) return "Pop";
+            //if (places[currentPlayer] == 1) return "Science";
+            //if (places[currentPlayer] == 5) return "Science";
+            //if (places[currentPlayer] == 9) return "Science";
+            //if (places[currentPlayer] == 2) return "Sports";
+            //if (places[currentPlayer] == 6) return "Sports";
+            //if (places[currentPlayer] == 10) return "Sports";
+            //return "Rock";
         }
 
         public bool wasCorrectlyAnswered()
