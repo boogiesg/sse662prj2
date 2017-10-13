@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trivia", "Trivia\Trivia.csproj", "{6DF4340A-A044-4593-BC79-8F7961BB91E7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TriviaUnitTestProject", "TriviaUnitTestProject\TriviaUnitTestProject.csproj", "{BDF8DA07-7CDF-4C99-88C9-C03E4FCDC1CA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6DF4340A-A044-4593-BC79-8F7961BB91E7} = {6DF4340A-A044-4593-BC79-8F7961BB91E7}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject1", "UnitTestProject1\UnitTestProject1.csproj", "{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}"
 EndProject
@@ -17,7 +20,8 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6DF4340A-A044-4593-BC79-8F7961BB91E7}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{6DF4340A-A044-4593-BC79-8F7961BB91E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DF4340A-A044-4593-BC79-8F7961BB91E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DF4340A-A044-4593-BC79-8F7961BB91E7}.Debug|x86.ActiveCfg = Debug|x86
 		{6DF4340A-A044-4593-BC79-8F7961BB91E7}.Debug|x86.Build.0 = Debug|x86
 		{6DF4340A-A044-4593-BC79-8F7961BB91E7}.Release|Any CPU.ActiveCfg = Release|x86
