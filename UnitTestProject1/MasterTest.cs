@@ -49,7 +49,7 @@ namespace UnitTestProject1
 
         private static void RunTheProgram(int seed, string outputFile, int times)
         {
-            int times1;
+            //int times1;
             using (var writer = File.CreateText(outputFile))
             {
                 Console.SetOut(writer);
