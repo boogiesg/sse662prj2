@@ -81,15 +81,6 @@ namespace TriviaUnitTestProject
             Assert.IsFalse(testGame.wasCorrectlyAnswered());
         }
 
-        [TestMethod]
-        public void TestQuestions()
-        {
-            testGame.AddPlayer("Player1");
-            testGame.EvaluateRoll(1);
-            for (int i = 0; i < 201; ++i)
-            {
-                testGame.EvaluateRoll(1);
-            }
-        }
+        
     }
 }
