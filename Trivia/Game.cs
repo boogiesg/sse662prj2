@@ -8,27 +8,14 @@ namespace Trivia
 {
     public class Game
     {
-
-
-        List<string> players = new List<string>();
-
-        int[] places = new int[6];
-        int[] purses = new int[6];
-
-        bool[] inPenaltyBox = new bool[6];
-
-        LinkedList<string> popQuestions = new LinkedList<string>();
-        LinkedList<string> scienceQuestions = new LinkedList<string>();
-        LinkedList<string> sportsQuestions = new LinkedList<string>();
-        LinkedList<string> rockQuestions = new LinkedList<string>();
-
-        int currentPlayer = 0;
+        Player _CurrentPlayer;
+        List<Player> Players = new List<Player>();
+        HashSet<Player> PenaltyBox = new HashSet<Player>();
         bool isGettingOutOfPenaltyBox;
         private QuestionDeck questionDeck;  //JCook private instance of QuestionDeck 
 
         public Game()
         {
-
             questionDeck = new QuestionDeck();  
             questionDeck.FillQuestions();
             //JCook - Refactored into QuestionDeck class
@@ -48,73 +35,73 @@ namespace Trivia
         //}
 
         //JCook "I don't believe isPlayable() needs refactoring. Thoughts?"
+        //Changed to use Count directly to remove extra method call
         public bool isPlayable()
         {
-            return (howManyPlayers() >= 2);
+            return Players.Count >= 2;
         }
         
         //JCook "I don't believe add(playerName) needs refactoring. Thoughts?"
-        public bool add(String playerName)
+        //With addition of Player class it was necessary
+        public void AddPlayer(string playerName)
         {
+            Players.Add(new Player(playerName));
 
-
-            players.Add(playerName);
-            places[howManyPlayers()] = 0;
-            purses[howManyPlayers()] = 0;
-            inPenaltyBox[howManyPlayers()] = false;
-
-            Console.WriteLine(playerName + " was added");
-            Console.WriteLine("They are player number " + players.Count);
-            return true;
+            Console.WriteLine($"{playerName} was added");
+            Console.WriteLine($"They are player number {Players.Count}");
         }
 
         //JCook "I don't believe howManyPlayers() needs refactoring. Thoughts?"
+        //Brian Looks fine to me
         public int howManyPlayers()
         {
-            return players.Count;
+            return Players.Count;
         }
 
-        public void roll(int roll)
+        Player GetNextPlayer()
         {
-            Console.WriteLine(players[currentPlayer] + " is the current player");
-            Console.WriteLine("They have rolled a " + roll);
-
-            if (inPenaltyBox[currentPlayer])
+            if (_CurrentPlayer == null)
             {
-                if (roll % 2 != 0)
+                _CurrentPlayer = Players.FirstOrDefault();
+                if (_CurrentPlayer == null)
                 {
-                    isGettingOutOfPenaltyBox = true;
-
-                    Console.WriteLine(players[currentPlayer] + " is getting out of the penalty box");
-                    places[currentPlayer] = places[currentPlayer] + roll;
-                    if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
-
-                    Console.WriteLine(players[currentPlayer]
-                            + "'s new location is "
-                            + places[currentPlayer]);
-                    Console.WriteLine("The category is " + currentCategory());
-                    askQuestion();
+                    throw new InvalidOperationException("No players found!");
                 }
-                else
-                {
-                    Console.WriteLine(players[currentPlayer] + " is not getting out of the penalty box");
-                    isGettingOutOfPenaltyBox = false;
-                }
-
+                return _CurrentPlayer;
             }
             else
             {
+                int CurrentPlayerIndex = Players.IndexOf(_CurrentPlayer);
+                return Players.ElementAtOrDefault(CurrentPlayerIndex + 1) ?? Players[0];
+            }
+        }
 
-                places[currentPlayer] = places[currentPlayer] + roll;
-                if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
+        public void EvaluateRoll(int roll)
+        {
+            _CurrentPlayer = GetNextPlayer();
 
-                Console.WriteLine(players[currentPlayer]
-                        + "'s new location is "
-                        + places[currentPlayer]);
+            Console.WriteLine($"{_CurrentPlayer.Name} is the current player");
+            Console.WriteLine($"They have rolled a {roll}");
+
+            if (roll % 2 == 0 && PenaltyBox.Contains(_CurrentPlayer))
+            {
+                Console.WriteLine($"{_CurrentPlayer.Name} is not getting out of the penalty box");
+                isGettingOutOfPenaltyBox = false;
+            }
+            else
+            {
+                if (PenaltyBox.Contains(_CurrentPlayer))
+                {
+                    Console.WriteLine($"{_CurrentPlayer.Name} is getting out of the penalty box");
+                    isGettingOutOfPenaltyBox = true;
+                }
+
+                _CurrentPlayer.MovePosition(roll);
+                Console.WriteLine($"{_CurrentPlayer.Name}'s new location is {_CurrentPlayer.Position}");
+
                 Console.WriteLine("The category is " + currentCategory());
                 askQuestion();
             }
-
         }
 
         private void askQuestion()
@@ -148,7 +135,7 @@ namespace Trivia
         private String currentCategory()
         {
             //category tracking method moved to questiondeck class
-            return questionDeck.CurrentCategoryPlace(places[currentPlayer]);
+            return questionDeck.CurrentCategoryPlace(_CurrentPlayer.Position);
             
             //if (places[currentPlayer] == 0) return "Pop";
             //if (places[currentPlayer] == 4) return "Pop";
@@ -162,68 +149,35 @@ namespace Trivia
             //return "Rock";
         }
 
+        //Returns true if NOT a winner (TODO: fix this)
         public bool wasCorrectlyAnswered()
         {
-            if (inPenaltyBox[currentPlayer])
+            if (PenaltyBox.Contains(_CurrentPlayer) && !isGettingOutOfPenaltyBox)
             {
-                if (isGettingOutOfPenaltyBox)
-                {
-                    Console.WriteLine("Answer was correct!!!!");
-                    purses[currentPlayer]++;
-                    Console.WriteLine(players[currentPlayer]
-                            + " now has "
-                            + purses[currentPlayer]
-                            + " Gold Coins.");
-
-                    bool winner = didPlayerWin();
-                    currentPlayer++;
-                    if (currentPlayer == players.Count) currentPlayer = 0;
-
-                    return winner;
-                }
-                else
-                {
-                    currentPlayer++;
-                    if (currentPlayer == players.Count) currentPlayer = 0;
-                    return true;
-                }
-
-
-
+                return true;
             }
             else
             {
+                Console.WriteLine("Answer was correct!!!!");
+                _CurrentPlayer.Purse.AddGoldCoin();
+                Console.WriteLine($"{_CurrentPlayer.Name} now has {_CurrentPlayer.Purse.GoldCoins} Gold Coins.");
 
-                Console.WriteLine("Answer was corrent!!!!");
-                purses[currentPlayer]++;
-                Console.WriteLine(players[currentPlayer]
-                        + " now has "
-                        + purses[currentPlayer]
-                        + " Gold Coins.");
-
-                bool winner = didPlayerWin();
-                currentPlayer++;
-                if (currentPlayer == players.Count) currentPlayer = 0;
-
-                return winner;
+                return hasPlayerWon();
             }
         }
 
         public bool wrongAnswer()
         {
             Console.WriteLine("Question was incorrectly answered");
-            Console.WriteLine(players[currentPlayer] + " was sent to the penalty box");
-            inPenaltyBox[currentPlayer] = true;
+            Console.WriteLine($"{_CurrentPlayer.Name} was sent to the penalty box");
+            PenaltyBox.Add(_CurrentPlayer);
 
-            currentPlayer++;
-            if (currentPlayer == players.Count) currentPlayer = 0;
             return true;
         }
 
-
-        private bool didPlayerWin()
+        private bool hasPlayerWon()
         {
-            return !(purses[currentPlayer] == 6);
+            return _CurrentPlayer.Purse.GoldCoins != 6;
         }
     }
 

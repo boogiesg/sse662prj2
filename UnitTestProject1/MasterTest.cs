@@ -29,6 +29,11 @@ namespace UnitTestProject1
         {
             RunTheProgram(seed: 794, outputFile: ConsoleOutput, times: 100);
 
+            //Windows uses \r\n for new lines instead of \n on other systems
+            //There were some differences with the "correct" typos
+            //var actual = File.ReadAllText(ConsoleOutput).Replace("\r\n", "\n").Replace("corrent", "correct");
+            //var goldenMaster = File.ReadAllText(MasterCopy).Replace("corrent", "correct");
+
             var actual = File.ReadAllText(ConsoleOutput);
             var goldenMaster = File.ReadAllText(MasterCopy);
 

@@ -27,16 +27,16 @@ namespace UglyTrivia
         {
             Game aGame = new Game();
 
-            aGame.add("Chet");
-            aGame.add("Pat");
-            aGame.add("Sue");
+            aGame.AddPlayer("Chet");
+            aGame.AddPlayer("Pat");
+            aGame.AddPlayer("Sue");
         
             //Random rand = new Random();
 
             do
             {
 
-                aGame.roll(rand.Next(5) + 1);
+                aGame.EvaluateRoll(rand.Next(5) + 1);
 
                 if (rand.Next(9) == 7)
                 {

@@ -11,18 +11,18 @@ namespace TriviaUnitTestProject
         [TestMethod]
         public void TestAddPlayer()
         {
-            testGame.add("Player1");
+            testGame.AddPlayer("Player1");
             Assert.AreEqual(1, testGame.howManyPlayers());
-            testGame.add("Player2");
+            testGame.AddPlayer("Player2");
             Assert.AreNotEqual(1, testGame.howManyPlayers());
         }
 
         [TestMethod]
         public void TestIsPlayable()
         {
-            testGame.add("Player1");
+            testGame.AddPlayer("Player1");
             Assert.IsFalse(testGame.isPlayable());
-            testGame.add("Player2");
+            testGame.AddPlayer("Player2");
             Assert.IsTrue(testGame.isPlayable());
         }
 
@@ -40,7 +40,8 @@ namespace TriviaUnitTestProject
             //but also checks for the end game condition.
             //Returns the inverse of what would be expected (false for win condition).
 
-            testGame.add("Player1");
+            testGame.AddPlayer("Player1");
+            testGame.EvaluateRoll(1);
             for (int i = 0; i < 5; ++i)
             {
                 Assert.IsTrue(testGame.wasCorrectlyAnswered());
@@ -52,13 +53,16 @@ namespace TriviaUnitTestProject
         [TestMethod]
         public void TestPenaltyBox()
         {
-            testGame.add("Player1");
+            testGame.AddPlayer("Player1");
+
+            //Pose a question
+            testGame.EvaluateRoll(2);
 
             //Places player into penalty box
             testGame.wrongAnswer();
 
             //Even rolls stay in penalty box
-            testGame.roll(2);
+            testGame.EvaluateRoll(2);
             for (int i = 0; i < 5; ++i)
             {
                 Assert.IsTrue(testGame.wasCorrectlyAnswered());
@@ -68,7 +72,7 @@ namespace TriviaUnitTestProject
 
             //Player "isGettingOutOfPenaltyBox" but never actually gets out
             //Still ultimately the same as getting out though
-            testGame.roll(1);
+            testGame.EvaluateRoll(1);
             for (int i = 0; i < 5; ++i)
             {
                 Assert.IsTrue(testGame.wasCorrectlyAnswered());
@@ -80,10 +84,11 @@ namespace TriviaUnitTestProject
         [TestMethod]
         public void TestQuestions()
         {
-            testGame.add("Player1");
+            testGame.AddPlayer("Player1");
+            testGame.EvaluateRoll(1);
             for (int i = 0; i < 201; ++i)
             {
-                testGame.roll(1);
+                testGame.EvaluateRoll(1);
             }
         }
     }
