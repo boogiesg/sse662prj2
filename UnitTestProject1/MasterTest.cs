@@ -60,11 +60,5 @@ namespace UnitTestProject1
             }
         }
 
-
-        [Fact]
-        public void TestMethod1()
-        {
-        }
-
     }
 }
