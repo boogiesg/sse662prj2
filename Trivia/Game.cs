@@ -119,7 +119,7 @@ namespace Trivia
 
         private void askQuestion()
         {
-            var question = _questionDeck.AskCategoryQuestion(CurrentCategory());
+            var question = questionDeck.AskCategoryQuestion(currentCategory());
             Console.WriteLine(question);
 
             //if (currentCategory() == "Pop")
