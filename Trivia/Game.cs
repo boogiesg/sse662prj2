@@ -41,10 +41,11 @@ namespace Trivia
             //}
         }
 
-        public String createRockQuestion(int index)
-        {
-            return "Rock Question " + index;
-        }
+        //John Cook - Moved all question creation into QuestionDeck.createQuestion()
+        //public String createRockQuestion(int index)
+        //{
+        //    return "Rock Question " + index;
+        //}
 
         //JCook "I don't believe isPlayable() needs refactoring. Thoughts?"
         public bool isPlayable()
