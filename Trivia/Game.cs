@@ -121,7 +121,7 @@ namespace Trivia
         {
             var question = questionDeck.AskCategoryQuestion(currentCategory());
             Console.WriteLine(question);
-
+            //John Cook - moved to questiondeck class
             //if (currentCategory() == "Pop")
             //{
             //    Console.WriteLine(popQuestions.First());
